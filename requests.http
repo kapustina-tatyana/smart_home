@@ -1,0 +1,59 @@
+# примеры API-запросов
+
+@baseUrl = http://localhost:8000/api
+
+# получение датчиков
+GET {{baseUrl}}/sensors/
+Content-Type: application/json
+
+curl -i -H "content-type: application/json" -X GET 'http://localhost:8000/api/sensors/'
+[{"id":1,"name":"ESP32","description":"Датчик на кухне за холодильником"}]
+
+###
+
+# создание датчика
+POST {{baseUrl}}/sensors/
+Content-Type: application/json
+
+{
+  "name": "ESP32",
+  "description": "Датчик на кухне за холодильником"
+}
+
+
+curl -i -H "content-type: application/json" -d '{"name": "ESP32", "description": "Датчик на кухне за холодильником"}' -X POST 'http://localhost:8000/api/sensors/'
+{"id":1,"name":"ESP32","description":"Датчик на кухне за холодильником"}
+
+###
+
+# обновление датчика
+PATCH {{baseUrl}}/sensors/1/
+Content-Type: application/json
+
+{
+  "description": "Перенес датчик на балкон"
+}
+
+curl -i -H "content-type: application/json" -d '{"description": "Датчик на кухне теперь под холодильником"}' -X PATCH 'http://localhost:8000/api/sensors/1/'
+{"id":1,"name":"ESP32","description":"Датчик на кухне теперь под холодильником"}
+###
+
+# добавление измерения
+POST {{baseUrl}}/measurements/
+Content-Type: application/json
+
+{
+  "sensor": 1,
+  "temperature": 22.3
+}
+
+ curl -i -H "content-type: application/json" -d '{"sensor": 1, "temperature": 22.3}' -X POST 'http://localhost:8000/api/measurements/'
+{"sensor":1,"temperature":22.3,"created_at":"2022-11-21T23:19:13.776561Z"}
+###
+
+# получение информации по датчику
+GET {{baseUrl}}/sensors/1/
+Content-Type: application/json
+
+curl -i -H "content-type: application/json" -X GET 'http://localhost:8000/api/sensors/1/'
+{"id":1,"name":"ESP32","description":"Датчик на кухне теперь под холодильником","measurements":[{"temperature":22.3,"created_at":"2022-11-21T23:19:13.776561Z"}]}
